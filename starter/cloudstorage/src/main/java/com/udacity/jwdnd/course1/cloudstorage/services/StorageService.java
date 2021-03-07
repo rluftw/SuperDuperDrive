@@ -22,23 +22,28 @@ public final class StorageService {
         this.userService = userService;
     }
 
-    public String store(MultipartFile file, Authentication authentication) {
+    public String storeFile(MultipartFile file, Authentication authentication) {
         String errorMessage = null;
         Integer userId = userService.getUser(authentication.getName()).getId();
-        try {
-            fileMapper.addFile(new File(
-                            null,
-                            file.getOriginalFilename(),
-                            file.getContentType(),
-                            Long.toString(file.getSize()),
-                            userId,
-                            file.getBytes()
-                    )
-            );
-        } catch (IOException e) {
-            errorMessage = e.getMessage();
-            logger.error(e.getMessage());
+        if (fileMapper.getFile(file.getOriginalFilename()) == null) {
+            try {
+                fileMapper.addFile(new File(
+                                null,
+                                file.getOriginalFilename(),
+                                file.getContentType(),
+                                Long.toString(file.getSize()),
+                                userId,
+                                file.getBytes()
+                        )
+                );
+            } catch (IOException e) {
+                errorMessage = e.getMessage();
+                logger.error(e.getMessage());
+            }
+        } else {
+            errorMessage = "File with the same name already exists.";
         }
+
         return errorMessage;
     }
 
@@ -47,7 +52,12 @@ public final class StorageService {
         return fileMapper.getAllFiles(userId);
     }
 
-    public void deleteFile(Integer fileId) {
-        fileMapper.deleteFile(fileId);
+    public Boolean deleteFile(Integer fileId) {
+        Integer rowsChanged = fileMapper.deleteFile(fileId);
+        return rowsChanged > 0;
+    }
+
+    public File getFile(Integer fileId) {
+        return fileMapper.getFileFromId(fileId);
     }
 }
