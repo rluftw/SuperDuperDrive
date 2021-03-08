@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
+import com.udacity.jwdnd.course1.cloudstorage.Model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.Model.File;
 import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
 
@@ -11,10 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 public final class StorageService {
     private FileService fileService;
     private NoteService noteService;
+    private CredentialService credentialService;
 
-    public StorageService(FileService fileService, NoteService noteService) {
+    public StorageService(FileService fileService, NoteService noteService, CredentialService credentialService) {
         this.fileService = fileService;
         this.noteService = noteService;
+        this.credentialService = credentialService;
     }
 
     public String storeFile(MultipartFile file, Authentication authentication) {
@@ -43,5 +46,17 @@ public final class StorageService {
 
     public Boolean deleteNote(Integer noteId) {
         return noteService.deleteNote(noteId);
+    }
+
+    public Credential[] getAllCredentials(Authentication authentication) {
+        return credentialService.allCredentials(authentication);
+    }
+
+    public Boolean storeCredential(Credential credential, Authentication authentication) {
+        return credentialService.storeCredential(credential, authentication);
+    }
+
+    public Boolean deleteCredential(Integer credentialId) {
+        return credentialService.deleteCredential(credentialId);
     }
 }
