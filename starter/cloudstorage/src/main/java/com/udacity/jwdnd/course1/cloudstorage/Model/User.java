@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.Model.internal;
+package com.udacity.jwdnd.course1.cloudstorage.Model;
 
 public class User {
     private Integer id;

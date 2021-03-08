@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
-import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
+import com.udacity.jwdnd.course1.cloudstorage.Model.File;
+import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.services.storage.StorageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.core.Authentication;
