@@ -1,63 +1,51 @@
 package com.udacity.jwdnd.course1.cloudstorage.services;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.File;
-import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @Service
 public final class StorageService {
-    private final Logger logger = LoggerFactory.getLogger(StorageService.class);
-    private FileMapper fileMapper;
-    private UserService userService;
+    private FileService fileService;
+    private NoteService noteService;
 
-    public StorageService(FileMapper fileMapper, UserService userService) {
-        this.fileMapper = fileMapper;
-        this.userService = userService;
+    public StorageService(FileService fileService, NoteService noteService) {
+        this.fileService = fileService;
+        this.noteService = noteService;
     }
 
     public String storeFile(MultipartFile file, Authentication authentication) {
-        String errorMessage = null;
-        Integer userId = userService.getUser(authentication.getName()).getId();
-        if (fileMapper.getFile(file.getOriginalFilename()) == null) {
-            try {
-                fileMapper.addFile(new File(
-                                null,
-                                file.getOriginalFilename(),
-                                file.getContentType(),
-                                Long.toString(file.getSize()),
-                                userId,
-                                file.getBytes()
-                        )
-                );
-            } catch (IOException e) {
-                errorMessage = e.getMessage();
-                logger.error(e.getMessage());
-            }
-        } else {
-            errorMessage = "File with the same name already exists.";
-        }
-
-        return errorMessage;
+        return fileService.storeFile(file, authentication);
     }
 
     public File[] allFiles(Authentication authentication) {
-        Integer userId = userService.getUser(authentication.getName()).getId();
-        return fileMapper.getAllFiles(userId);
+        return fileService.allFiles(authentication);
     }
 
     public Boolean deleteFile(Integer fileId) {
-        Integer rowsChanged = fileMapper.deleteFile(fileId);
-        return rowsChanged > 0;
+        return fileService.deleteFile(fileId);
     }
 
     public File getFile(Integer fileId) {
-        return fileMapper.getFileFromId(fileId);
+        return fileService.getFile(fileId);
+    }
+
+    public Boolean storeNote(NoteForm noteForm, Authentication authentication) {
+        return noteService.storeNote(noteForm, authentication);
+    }
+
+    public Note[] allNotes(Authentication authentication) {
+        return noteService.allNotes(authentication);
     }
 }
+
+/*
+    private Integer id;
+    private String title;
+    private String description;
+    private Integer userId;
+ */

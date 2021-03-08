@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.File;
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
 import com.udacity.jwdnd.course1.cloudstorage.services.StorageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.core.Authentication;
@@ -23,8 +24,9 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String getHome(Model model, Authentication authentication) {
+    public String getHome(NoteForm chatForm, Model model, Authentication authentication) {
         model.addAttribute("files", storageService.allFiles(authentication));
+        model.addAttribute("notes", storageService.allNotes(authentication));
         return "home";
     }
 
@@ -48,15 +50,19 @@ public class HomeController {
         }
     }
 
-    @PostMapping("/home")
-    public String handleFileUpload(@RequestParam("fileUpload") MultipartFile file, Authentication authentication, Model model) {
+    @PostMapping("/fileUpload")
+    public String handleUpload(@RequestParam("fileUpload") MultipartFile file, Authentication authentication, Model model) {
         String errorMessage = storageService.storeFile(file, authentication);
-        file = null;
         if (errorMessage == null) {
             model.addAttribute("successful", true);
         } else {
             model.addAttribute("errorMessage", errorMessage);
         }
+        return "result";
+    }
+
+    @PostMapping("/noteUpload")
+    public String handleNoteUpload(@ModelAttribute("noteForm") NoteForm noteForm, Authentication authentication, Model model) {
         return "result";
     }
 }
