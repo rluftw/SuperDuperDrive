@@ -1,8 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
-import com.udacity.jwdnd.course1.cloudstorage.services.StorageService;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
+import com.udacity.jwdnd.course1.cloudstorage.services.storage.StorageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String getHome(NoteForm chatForm, Model model, Authentication authentication) {
+    public String getHome(Note note, Model model, Authentication authentication) {
         model.addAttribute("files", storageService.allFiles(authentication));
         model.addAttribute("notes", storageService.allNotes(authentication));
         return "home";
@@ -33,7 +33,6 @@ public class HomeController {
     @GetMapping("/deleteFile/{id}")
     public String handleFileDelete(@PathVariable(value = "id") Integer fileId, Model model) {
         model.addAttribute("successful", storageService.deleteFile(fileId));
-
         return "result";
     }
 
@@ -62,7 +61,15 @@ public class HomeController {
     }
 
     @PostMapping("/noteUpload")
-    public String handleNoteUpload(@ModelAttribute("noteForm") NoteForm noteForm, Authentication authentication, Model model) {
+    public String handleNoteUpload(@ModelAttribute("note") Note note, Authentication authentication, Model model) {
+        model.addAttribute("successful", storageService.storeNote(note, authentication));
         return "result";
     }
+
+    @GetMapping("/deleteNote/{id}")
+    public String handleNoteDelete(@PathVariable(value = "id") Integer noteId, Model model) {
+        model.addAttribute("successful", storageService.deleteNote(noteId));
+        return "result";
+    }
+
 }

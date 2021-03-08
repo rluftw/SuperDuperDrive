@@ -1,8 +1,7 @@
-package com.udacity.jwdnd.course1.cloudstorage.services;
+package com.udacity.jwdnd.course1.cloudstorage.services.authentication;
 
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.User;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.UserMapper;
-import com.udacity.jwdnd.course1.cloudstorage.services.security.HashService;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;

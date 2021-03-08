@@ -75,13 +75,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr th:each="note : ${notes}">
                                         <td>
-                                            <button type="button" class="btn btn-success">Edit</button>
-                                            <a class="btn btn-danger">Delete</a>
+                                            <button
+                                                    th:data-parameter1="${note.id}"
+                                                    th:data-parameter2="${note.title}"
+                                                    th:data-parameter3="${note.description}"
+                                                    th:onclick="showNoteModal(this.getAttribute('data-parameter1'), this.getAttribute('data-parameter2'), this.getAttribute('data-parameter3'));"
+                                                    type="button"
+                                                    class="btn btn-success"
+                                            >Edit</button>
+                                            <a th:href="@{/deleteNote/{id}(id=${note.id})}" class="btn btn-danger">Delete</a>
                                         </td>
-                                        <th scope="row">Example Note Title</th>
-                                        <td>Example Note Description </td>
+                                        <th th:text="${note.title}" scope="row">Example Note Title</th>
+                                        <td th:text="${note.description}">Example Note Description </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -97,8 +104,8 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form th:object="${noteForm}" th:action="@{/noteUpload}" action="#" method="POST">
-                                            <input type="hidden" name="noteId" id="note-id">
+                                        <form th:object="${note}" th:action="@{/noteUpload}" action="#" method="POST">
+                                            <input th:field="*{id}" type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
                                                 <input th:field="*{title}" type="text" name= "noteTitle" class="form-control" id="note-title" maxlength="20" required>

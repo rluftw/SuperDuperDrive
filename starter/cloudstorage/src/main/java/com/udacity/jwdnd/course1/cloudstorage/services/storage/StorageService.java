@@ -1,6 +1,5 @@
-package com.udacity.jwdnd.course1.cloudstorage.services;
+package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 
@@ -34,18 +33,15 @@ public final class StorageService {
         return fileService.getFile(fileId);
     }
 
-    public Boolean storeNote(NoteForm noteForm, Authentication authentication) {
-        return noteService.storeNote(noteForm, authentication);
+    public Boolean storeNote(Note note, Authentication authentication) {
+        return noteService.storeNote(note, authentication);
     }
 
     public Note[] allNotes(Authentication authentication) {
         return noteService.allNotes(authentication);
     }
-}
 
-/*
-    private Integer id;
-    private String title;
-    private String description;
-    private Integer userId;
- */
+    public Boolean deleteNote(Integer noteId) {
+        return noteService.deleteNote(noteId);
+    }
+}

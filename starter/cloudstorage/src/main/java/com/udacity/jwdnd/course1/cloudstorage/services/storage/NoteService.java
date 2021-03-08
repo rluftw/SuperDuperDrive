@@ -1,8 +1,8 @@
-package com.udacity.jwdnd.course1.cloudstorage.services;
+package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
+import com.udacity.jwdnd.course1.cloudstorage.services.authentication.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +21,19 @@ public class NoteService {
         return noteMapper.getAllNotes(userId);
     }
 
-    public Boolean storeNote(NoteForm noteForm, Authentication authentication) {
-        Integer userId = userService.getUser(authentication.getName()).getId();
-        Integer rowsInserted = noteMapper.addNote(new Note(
-                null,
-                noteForm.getTitle(),
-                noteForm.getDescription(),
-                userId)
-        );
-        return rowsInserted > 0;
+    public Boolean storeNote(Note note, Authentication authentication) {
+        note.setUserId(userService.getUser(authentication.getName()).getId());
+        Integer rowsAffected;
+        if (note.getId() == null) {
+            rowsAffected = noteMapper.addNote(note);
+        } else {
+            rowsAffected = noteMapper.updateNote(note);
+        }
+        return rowsAffected > 0;
+    }
+
+    public Boolean deleteNote(Integer noteId) {
+        Integer rowsChanged = noteMapper.deleteNote(noteId);
+        return rowsChanged > 0;
     }
 }
