@@ -48,12 +48,12 @@ public final class StorageService {
         return noteService.deleteNote(noteId);
     }
 
-    public Credential[] getAllCredentials(Authentication authentication) {
+    public Credential[] allCredentials(Authentication authentication) {
         return credentialService.allCredentials(authentication);
     }
 
     public Boolean storeCredential(Credential credential, Authentication authentication) {
-        return credentialService.storeCredential(credential, authentication);
+        return credentialService.addCredential(credential, authentication);
     }
 
     public Boolean deleteCredential(Integer credentialId) {

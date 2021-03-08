@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.Model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.Model.File;
 import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
 import com.udacity.jwdnd.course1.cloudstorage.services.storage.StorageService;
@@ -24,9 +25,10 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String getHome(Note note, Model model, Authentication authentication) {
+    public String getHome(Note note, Credential credential, Model model, Authentication authentication) {
         model.addAttribute("files", storageService.allFiles(authentication));
         model.addAttribute("notes", storageService.allNotes(authentication));
+        model.addAttribute("credentials", storageService.allCredentials(authentication));
         return "home";
     }
 
@@ -50,7 +52,7 @@ public class HomeController {
     }
 
     @PostMapping("/fileUpload")
-    public String handleUpload(@RequestParam("fileUpload") MultipartFile file, Authentication authentication, Model model) {
+    public String handleFileUpload(@RequestParam("fileUpload") MultipartFile file, Authentication authentication, Model model) {
         String errorMessage = storageService.storeFile(file, authentication);
         if (errorMessage == null) {
             model.addAttribute("successful", true);
@@ -72,4 +74,15 @@ public class HomeController {
         return "result";
     }
 
+    @PostMapping("/credentialsUpload")
+    public String handleCredentialUpload(@ModelAttribute("credential") Credential credential, Authentication authentication, Model model) {
+        model.addAttribute("successful", storageService.storeCredential(credential, authentication));
+        return "result";
+    }
+
+    @GetMapping("/deleteCredential/{id}")
+    public String handleCredentialDelete(@PathVariable(value = "id") Integer credentialId, Model model) {
+        model.addAttribute("successful", storageService.deleteCredential(credentialId));
+        return "result";
+    }
 }
