@@ -7,6 +7,8 @@ import com.udacity.jwdnd.course1.cloudstorage.services.authentication.UserServic
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NoteService {
     private final UserService userService;
@@ -17,7 +19,7 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
-    public Note[] allNotes(Authentication authentication) {
+    public List<Note> allNotes(Authentication authentication) {
         Integer userId = userService.getUser(authentication.getName()).getId();
         return noteMapper.getAllNotes(userId);
     }
@@ -29,7 +31,6 @@ public class NoteService {
                 noteForm.getDescription(),
                 userService.getUser(authentication.getName()).getId()
         );
-
 
         Integer rowsAffected;
         if (note.getId() == null) {

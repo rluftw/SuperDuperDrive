@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -47,7 +48,7 @@ public class FileService {
         return errorMessage;
     }
 
-    public File[] allFiles(Authentication authentication) {
+    public List<File> allFiles(Authentication authentication) {
         Integer userId = userService.getUser(authentication.getName()).getId();
         return fileMapper.getAllFiles(userId);
     }

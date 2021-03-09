@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public final class StorageService {
     private FileService fileService;
@@ -26,7 +28,7 @@ public final class StorageService {
         return fileService.storeFile(file, authentication);
     }
 
-    public File[] allFiles(Authentication authentication) {
+    public List<File> allFiles(Authentication authentication) {
         return fileService.allFiles(authentication);
     }
 
@@ -42,7 +44,7 @@ public final class StorageService {
         return noteService.storeNote(noteForm, authentication);
     }
 
-    public Note[] allNotes(Authentication authentication) {
+    public List<Note> allNotes(Authentication authentication) {
         return noteService.allNotes(authentication);
     }
 
