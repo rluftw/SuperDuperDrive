@@ -1,6 +1,5 @@
 package com.udacity.jwdnd.course1.cloudstorage.page;
 
-
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 import org.openqa.selenium.By;
