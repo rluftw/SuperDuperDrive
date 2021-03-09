@@ -1,8 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.Credential;
-import com.udacity.jwdnd.course1.cloudstorage.Model.File;
-import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.CredentialForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.services.storage.StorageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.core.Authentication;
@@ -25,7 +25,7 @@ public class HomeController {
     }
 
     @GetMapping("/home")
-    public String getHome(Note note, Credential credential, Model model, Authentication authentication) {
+    public String getHome(NoteForm noteForm, CredentialForm credentialForm, Model model, Authentication authentication) {
         model.addAttribute("files", storageService.allFiles(authentication));
         model.addAttribute("notes", storageService.allNotes(authentication));
         model.addAttribute("credentials", storageService.allCredentials(authentication));
@@ -63,8 +63,8 @@ public class HomeController {
     }
 
     @PostMapping("/noteUpload")
-    public String handleNoteUpload(@ModelAttribute("note") Note note, Authentication authentication, Model model) {
-        model.addAttribute("successful", storageService.storeNote(note, authentication));
+    public String handleNoteUpload(@ModelAttribute("note") NoteForm noteForm, Authentication authentication, Model model) {
+        model.addAttribute("successful", storageService.storeNote(noteForm, authentication));
         return "result";
     }
 
@@ -75,8 +75,8 @@ public class HomeController {
     }
 
     @PostMapping("/credentialsUpload")
-    public String handleCredentialUpload(@ModelAttribute("credential") Credential credential, Authentication authentication, Model model) {
-        model.addAttribute("successful", storageService.storeCredential(credential, authentication));
+    public String handleCredentialUpload(@ModelAttribute("credential") CredentialForm credentialForm, Authentication authentication, Model model) {
+        model.addAttribute("successful", storageService.storeCredential(credentialForm, authentication));
         return "result";
     }
 

@@ -1,6 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.CredentialForm;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.CredentialMapper;
 import com.udacity.jwdnd.course1.cloudstorage.services.authentication.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.services.authentication.UserService;
@@ -32,12 +33,18 @@ public class CredentialService {
         return credentials;
     }
 
-    public Boolean addCredential(Credential credential, Authentication authentication) {
+    public Boolean addCredential(CredentialForm credentialForm, Authentication authentication) {
         Integer userId = userService.getUser(authentication.getName()).getId();
+        Credential credential = new Credential(
+                credentialForm.getId(),
+                credentialForm.getUrl(),
+                credentialForm.getUsername(),
+                null, null, null
+        );
         Integer rowsAffected;
         String key = createKey();
 
-        credential.setPassword(encryptionService.encryptValue(credential.getPassword(), key));
+        credential.setPassword(encryptionService.encryptValue(credentialForm.getPassword(), key));
         credential.setKey(key);
         credential.setUserId(userId);
 

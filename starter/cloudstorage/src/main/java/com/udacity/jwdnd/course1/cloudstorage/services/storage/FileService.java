@@ -1,6 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.File;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.services.authentication.UserService;
 import org.slf4j.Logger;

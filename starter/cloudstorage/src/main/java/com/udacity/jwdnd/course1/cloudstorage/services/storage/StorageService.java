@@ -1,9 +1,11 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.Credential;
-import com.udacity.jwdnd.course1.cloudstorage.Model.File;
-import com.udacity.jwdnd.course1.cloudstorage.Model.Note;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Credential;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.CredentialForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +38,8 @@ public final class StorageService {
         return fileService.getFile(fileId);
     }
 
-    public Boolean storeNote(Note note, Authentication authentication) {
-        return noteService.storeNote(note, authentication);
+    public Boolean storeNote(NoteForm noteForm, Authentication authentication) {
+        return noteService.storeNote(noteForm, authentication);
     }
 
     public Note[] allNotes(Authentication authentication) {
@@ -52,8 +54,8 @@ public final class StorageService {
         return credentialService.allCredentials(authentication);
     }
 
-    public Boolean storeCredential(Credential credential, Authentication authentication) {
-        return credentialService.addCredential(credential, authentication);
+    public Boolean storeCredential(CredentialForm credentialForm, Authentication authentication) {
+        return credentialService.addCredential(credentialForm, authentication);
     }
 
     public Boolean deleteCredential(Integer credentialId) {
