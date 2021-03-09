@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 import com.udacity.jwdnd.course1.cloudstorage.page.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.page.LoginPage;
@@ -89,7 +90,7 @@ public class CloudStorageApplicationTests {
      */
 
     @Test
-    public void testSaveNote_VerifyItsDisplayed() {
+    public void testSavingANote_VerifyItsDisplayed() {
         signUpAndLogin();
 
         String noteTitle = "GME";
@@ -154,6 +155,81 @@ public class CloudStorageApplicationTests {
         homePage.goToNotesTab();
         assertTrue(homePage.isNoteListEmpty());
     }
+
+    /**
+     * Write a Selenium test that logs in an existing user, creates a
+     * credential and verifies that the credential details are visible in the credential list.
+     */
+
+    @Test
+    public void testSavingACredential_VerifyItsDisplayed() {
+        signUpAndLogin();
+
+        String credentialUrl = "https://udacity.com";
+        String credentialUsername = "admin";
+        String credentialPassword = "password";
+
+        HomePage homePage = new HomePage(driver);
+        homePage.addNewCredential(credentialUrl, credentialUsername, credentialPassword);
+
+        driver.get(baseURL + "/home");
+        homePage.goToCredentialsTab();
+
+        Credential credential = homePage.getFirstCredential();
+        assertEquals(credentialUrl, credential.getUrl());
+        assertEquals(credentialUsername, credentialUsername);
+    }
+
+    /**
+     * Write a Selenium test that logs in an existing user with existing credentials, clicks the
+     * edit credential button on an existing credential, changes the credential data, saves the
+     * changes, and verifies that the changes appear in the credential list.
+     */
+
+    @Test
+    public void testEditingCredentials_VerifyChangesAppear() {
+        signUpAndLogin();
+
+        HomePage homePage = new HomePage(driver);
+        homePage.addNewCredential("https://udacity.com", "admin", "password");
+
+        String newUrl = "https://facebook.com";
+        String newUsername = "username";
+        String newPassword = "password";
+
+        driver.get(baseURL + "/home");
+        homePage.editCredential(newUrl, newUsername, newPassword);
+
+        driver.get(baseURL + "/home");
+        Credential credential = homePage.getFirstCredential();
+        assertEquals(newUrl, credential.getUrl());
+        assertEquals(newUsername, credential.getUsername());
+    }
+
+    /**
+     * Write a Selenium test that logs in an existing user with existing credentials,
+     * clicks the delete credential button on an existing credential, and verifies that the
+     * credential no longer appears in the credential list.
+     */
+
+    @Test
+    public void testDeleteCredential_VerifyThatACreatedCredentialNoLongerExists() {
+        signUpAndLogin();
+
+        HomePage homePage = new HomePage(driver);
+        homePage.addNewCredential("https://udacity.com", "admin", "password");
+
+        driver.get(baseURL + "/home");
+        homePage.goToCredentialsTab();
+        assertNotNull(homePage.getFirstCredential());
+
+        homePage.deleteCredential();
+
+        driver.get(baseURL + "/home");
+        homePage.goToCredentialsTab();
+        assertTrue(homePage.isCredentialListEmpty());
+    }
+
 
     private void signUpAndLogin() {
         driver.get(baseURL + "/signup");

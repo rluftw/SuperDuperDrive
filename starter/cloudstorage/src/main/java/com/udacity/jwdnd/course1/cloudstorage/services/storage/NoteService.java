@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.POJO.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.services.authentication.UserService;
 import org.springframework.security.core.Authentication;

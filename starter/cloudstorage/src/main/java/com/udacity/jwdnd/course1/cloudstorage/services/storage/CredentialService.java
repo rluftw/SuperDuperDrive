@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.services.storage;
 
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Credential;
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.CredentialForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.POJO.CredentialForm;
 import com.udacity.jwdnd.course1.cloudstorage.mapper.CredentialMapper;
 import com.udacity.jwdnd.course1.cloudstorage.services.authentication.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.services.authentication.UserService;

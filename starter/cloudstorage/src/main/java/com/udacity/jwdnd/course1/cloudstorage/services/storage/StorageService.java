@@ -4,8 +4,8 @@ import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.File;
 import com.udacity.jwdnd.course1.cloudstorage.Model.internal.Note;
 
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.CredentialForm;
-import com.udacity.jwdnd.course1.cloudstorage.Model.external.NoteForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.POJO.CredentialForm;
+import com.udacity.jwdnd.course1.cloudstorage.Model.POJO.NoteForm;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

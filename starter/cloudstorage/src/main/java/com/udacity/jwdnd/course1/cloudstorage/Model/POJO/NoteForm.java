@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.Model.external;
+package com.udacity.jwdnd.course1.cloudstorage.Model.POJO;
 
 public class NoteForm {
     private Integer id;
