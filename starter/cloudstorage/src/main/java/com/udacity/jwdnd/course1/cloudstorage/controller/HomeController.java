@@ -9,15 +9,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 @Controller
-public class HomeController {
+public class HomeController implements HandlerExceptionResolver {
     private final StorageService storageService;
 
     public HomeController(StorageService storageService) {
@@ -53,7 +57,12 @@ public class HomeController {
 
     @PostMapping("/fileUpload")
     public String handleFileUpload(@RequestParam("fileUpload") MultipartFile file, Authentication authentication, Model model) {
-        String errorMessage = storageService.storeFile(file, authentication);
+        String errorMessage = null;
+        if (file.getSize() == 0) {
+            errorMessage = "Invalid file.";
+        } else {
+            errorMessage = storageService.storeFile(file, authentication);
+        }
         if (errorMessage == null) {
             model.addAttribute("successful", true);
         } else {
@@ -84,5 +93,14 @@ public class HomeController {
     public String handleCredentialDelete(@PathVariable(value = "id") Integer credentialId, Model model) {
         model.addAttribute("successful", storageService.deleteCredential(credentialId));
         return "result";
+    }
+
+    @Override
+    public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
+        ModelAndView modelAndView = new ModelAndView("result");
+        if (e instanceof MaxUploadSizeExceededException) {
+            modelAndView.getModel().put("errorMessage", "File size exceeds limit of 2MB!");
+        }
+        return modelAndView;
     }
 }
