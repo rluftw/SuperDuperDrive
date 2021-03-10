@@ -58,7 +58,7 @@ public class HomeController implements HandlerExceptionResolver {
     @PostMapping("/fileUpload")
     public String handleFileUpload(@RequestParam("fileUpload") MultipartFile file, Authentication authentication, Model model) {
         String errorMessage = null;
-        if (file.getSize() == 0) {
+        if (file.isEmpty()) {
             errorMessage = "Invalid file.";
         } else {
             errorMessage = storageService.storeFile(file, authentication);
