@@ -60,10 +60,11 @@ public class CloudStorageApplicationTests {
         driver.get(baseURL + "/home");
         assertEquals("Login", driver.getTitle());
 
-        signUpAndLogin();
-
-        driver.get(baseURL + "/home");
+        driver.get(baseURL + "/login");
         assertEquals("Login", driver.getTitle());
+
+        driver.get(baseURL + "/signup");
+        assertEquals("Sign Up", driver.getTitle());
     }
 
     /**

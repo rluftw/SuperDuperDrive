@@ -25,8 +25,14 @@ public class LoginPage {
     }
 
     public void login(String username, String password) {
-        new WebDriverWait(driver, 100).until(ExpectedConditions.visibilityOf(usernameField)).sendKeys(username);
-        new WebDriverWait(driver, 100).until(ExpectedConditions.visibilityOf(passwordField)).sendKeys(password);
-        new WebDriverWait(driver, 100).until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+        waitForVisibility(usernameField);
+        usernameField.sendKeys(username);
+        passwordField.sendKeys(password);
+        waitForVisibility(loginButton);
+        loginButton.click();
+    }
+
+    private void waitForVisibility(WebElement element) {
+        new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(element));
     }
 }
